@@ -1,0 +1,68 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+var/
+sdist/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+.installed.cfg
+lib/
+lib64/
+MANIFEST
+
+# Virtual Environment
+.venv/
+venv/
+ENV/
+env/
+.env.local
+.env.*.local
+
+# Environment secrets (keep .env.template)
+# .env is NOT ignored — it contains only non-secret config
+
+# Database (large binary — not tracked in git)
+data/nifty100.db
+
+# Raw data files (downloaded at runtime via download_data.py)
+data/raw/
+data/supporting/
+docs/document.pdf
+
+# Output artifacts (generated at runtime)
+output/
+
+# Pytest
+.pytest_cache/
+.cache/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Windows
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Logs
+*.log
+
+# Jupyter (if added later)
+.ipynb_checkpoints/
+*.ipynb
+
+# Pre-commit
+.pre-commit-config.yaml
