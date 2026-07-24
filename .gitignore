@@ -64,5 +64,11 @@ $RECYCLE.BIN/
 .ipynb_checkpoints/
 *.ipynb
 
+# Node.js
+node_modules/
+
+# Archives
+*.zip
+
 # Pre-commit
 .pre-commit-config.yaml

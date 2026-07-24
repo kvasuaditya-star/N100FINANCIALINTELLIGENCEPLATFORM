@@ -1,0 +1,229 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8">
+        <title>Weekly Mutual Fund Performance Report</title>
+        <style>
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                color: #333333;
+                background-color: #f4f6f9;
+                margin: 0;
+                padding: 0;
+            }
+            .container {
+                max-width: 650px;
+                margin: 20px auto;
+                background-color: #ffffff;
+                border-radius: 8px;
+                overflow: hidden;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+                border: 1px solid #e0e0e0;
+            }
+            .header {
+                background: linear-gradient(135deg, #12121e 0%, #00b4d8 100%);
+                color: #ffffff;
+                padding: 30px;
+                text-align: center;
+            }
+            .header h1 {
+                margin: 0;
+                font-size: 24px;
+                font-weight: 700;
+                letter-spacing: 0.5px;
+            }
+            .header p {
+                margin: 5px 0 0 0;
+                font-size: 14px;
+                opacity: 0.9;
+            }
+            .content {
+                padding: 30px;
+            }
+            .section-title {
+                color: #12121e;
+                font-size: 18px;
+                font-weight: 600;
+                border-bottom: 2px solid #00b4d8;
+                padding-bottom: 5px;
+                margin-top: 25px;
+                margin-bottom: 15px;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 20px;
+                font-size: 14px;
+            }
+            th {
+                background-color: #f7fafc;
+                color: #4a5568;
+                text-align: left;
+                padding: 10px;
+                font-weight: 600;
+                border-bottom: 2px solid #edf2f7;
+            }
+            td {
+                padding: 12px 10px;
+                border-bottom: 1px solid #edf2f7;
+                color: #2d3748;
+            }
+            tr:hover {
+                background-color: #f8fafc;
+            }
+            .badge {
+                display: inline-block;
+                padding: 3px 8px;
+                font-size: 11px;
+                font-weight: 600;
+                border-radius: 12px;
+                text-transform: uppercase;
+            }
+            .badge-high { background-color: #fed7d7; color: #9b2c2c; }
+            .badge-mod { background-color: #feebc8; color: #9c4221; }
+            .badge-low { background-color: #c6f6d5; color: #22543d; }
+            .footer {
+                background-color: #12121e;
+                color: #a0aec0;
+                text-align: center;
+                padding: 20px;
+                font-size: 11px;
+                border-top: 1px solid #2d3748;
+            }
+            .footer a {
+                color: #00b4d8;
+                text-decoration: none;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>Bluestock Mutual Fund Analytics</h1>
+                <p>Weekly Performance & Risk Summary Report</p>
+            </div>
+            <div class="content">
+                <p>Hello Investor,</p>
+                <p>Here is your weekly summary of mutual fund performance, low-cost options, and market index benchmarks compiled by our automated ETL pipeline.</p>
+                
+                <!-- Section 1: Top 3-Yr returns -->
+                <div class="section-title">Top 5 Performing Funds (by 3-Year CAGR)</div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Scheme Name</th>
+                            <th>Category</th>
+                            <th>3Yr Return</th>
+                            <th>Sharpe</th>
+                            <th>Risk Grade</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+    
+                        <tr>
+                            <td style="font-weight: 500;">SBI Bluechip Fund - Regular Plan - Growth</td>
+                            <td>Large Cap</td>
+                            <td style="color: #2f855a; font-weight: 600;">28.56%</td>
+                            <td>0.96</td>
+                            <td><span class="badge badge-mod">Moderate</span></td>
+                        </tr>
+        
+                        <tr>
+                            <td style="font-weight: 500;">Mirae Asset Large Cap Fund - Regular - Growth</td>
+                            <td>Large Cap</td>
+                            <td style="color: #2f855a; font-weight: 600;">25.13%</td>
+                            <td>1.20</td>
+                            <td><span class="badge badge-mod">Moderate</span></td>
+                        </tr>
+        
+                        <tr>
+                            <td style="font-weight: 500;">DSP Midcap Fund - Regular - Growth</td>
+                            <td>Mid Cap</td>
+                            <td style="color: #2f855a; font-weight: 600;">24.69%</td>
+                            <td>0.90</td>
+                            <td><span class="badge badge-high">High</span></td>
+                        </tr>
+        
+                        <tr>
+                            <td style="font-weight: 500;">HDFC Mid-Cap Opportunities Fund - Regular - Growth</td>
+                            <td>Mid Cap</td>
+                            <td style="color: #2f855a; font-weight: 600;">24.41%</td>
+                            <td>0.87</td>
+                            <td><span class="badge badge-high">High</span></td>
+                        </tr>
+        
+                        <tr>
+                            <td style="font-weight: 500;">ABSL Frontline Equity Fund - Regular - Growth</td>
+                            <td>Large Cap</td>
+                            <td style="color: #2f855a; font-weight: 600;">22.40%</td>
+                            <td>0.79</td>
+                            <td><span class="badge badge-mod">Moderate</span></td>
+                        </tr>
+        
+                    </tbody>
+                </table>
+                
+                <!-- Section 2: Low expense ratio funds -->
+                <div class="section-title">Top 5 Cost-Efficient Funds (Lowest Expense Ratios)</div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Scheme Name</th>
+                            <th>Category</th>
+                            <th>Expense Ratio</th>
+                            <th>3Yr CAGR</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+    
+                        <tr>
+                            <td>Nippon India Gilt Securities Fund - Regular - Growth</td>
+                            <td>Gilt</td>
+                            <td style="color: #2b6cb0; font-weight: 600;">0.55%</td>
+                            <td>5.54%</td>
+                        </tr>
+        
+                        <tr>
+                            <td>HDFC Short Term Debt Fund - Regular - Growth</td>
+                            <td>Short Duration</td>
+                            <td style="color: #2b6cb0; font-weight: 600;">0.56%</td>
+                            <td>4.11%</td>
+                        </tr>
+        
+                        <tr>
+                            <td>Kotak Liquid Fund - Regular - Growth</td>
+                            <td>Liquid</td>
+                            <td style="color: #2b6cb0; font-weight: 600;">0.60%</td>
+                            <td>4.52%</td>
+                        </tr>
+        
+                        <tr>
+                            <td>SBI Bluechip Fund - Direct Plan - Growth</td>
+                            <td>Large Cap</td>
+                            <td style="color: #2b6cb0; font-weight: 600;">0.66%</td>
+                            <td>5.16%</td>
+                        </tr>
+        
+                        <tr>
+                            <td>SBI Small Cap Fund - Direct Plan - Growth</td>
+                            <td>Small Cap</td>
+                            <td style="color: #2b6cb0; font-weight: 600;">0.72%</td>
+                            <td>-3.46%</td>
+                        </tr>
+        
+                    </tbody>
+                </table>
+                
+                <p style="font-size: 13px; color: #718096; margin-top: 25px;">
+                    *Note: This performance summary is generated automatically from daily NAV histories. Past performance is not an indicator of future returns.
+                </p>
+            </div>
+            <div class="footer">
+                <p>This is an automated performance report. Please do not reply directly to this email.</p>
+                <p>&copy; 2026 Bluestock Mutual Fund Analytics. All rights reserved.</p>
+            </div>
+        </div>
+    </body>
+    </html>
+    
