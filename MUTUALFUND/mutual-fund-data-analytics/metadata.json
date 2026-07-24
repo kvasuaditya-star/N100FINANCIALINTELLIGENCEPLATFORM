@@ -1,6 +1,0 @@
-{
-  "name": "Mutual Fund Data Analytics",
-  "description": "An interactive dashboard computing daily returns, CAGR, Sharpe/Sortino ratios, Alpha/Beta regression, maximum drawdowns, and comparative benchmark visualizations for 40 mutual fund schemes.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}
