@@ -1,0 +1,21 @@
+========================================================================
+                       RATIO ENGINE EDGE CASE LOG
+========================================================================
+
+CATEGORY: DATA SOURCE ISSUE
+--------------------------------------------------------------------------------
+Company      : PNB - Punjab National Bank
+Metric       : ROCE (Year: 2024-03)
+Computed     : 118.2187
+Source       : 1.6300
+Difference   : 116.5887
+Explanation  : Unit scale discrepancy between P&L and Balance Sheet tables in source data. P&L values are in crores while Balance Sheet values are in a different unit or have missing zeros, resulting in an artificially inflated computed ROCE (118.22%) compared to source master ROCE (1.63%).
+
+Company      : PNB - Punjab National Bank
+Metric       : ROE (Year: 2024-03)
+Computed     : 61.3206
+Source       : 8.7000
+Difference   : 52.6206
+Explanation  : Unit scale discrepancy between P&L and Balance Sheet tables in source data. P&L values are in crores while Balance Sheet values are in a different unit or have missing zeros, resulting in an artificially inflated computed ROE (61.32%) compared to source master ROE (8.70%).
+
+
