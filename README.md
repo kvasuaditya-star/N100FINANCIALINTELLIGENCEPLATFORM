@@ -65,6 +65,18 @@ make test
 .venv\Scripts\pytest tests/
 ```
 
+### 7. Run Streamlit Dashboard
+```bash
+.venv\Scripts\streamlit run src/dashboard/app.py
+# or:
+make dashboard
+```
+
+### 8. Run Valuation Module
+```bash
+.venv\Scripts\python src/analytics/valuation.py
+```
+
 ## Project Structure
 
 ```
@@ -129,11 +141,24 @@ make clean      # Clean pycache and temp files
 | Sprint | Theme | Status |
 |---|---|---|
 | Sprint 1 (Day 01–07) | Data Foundation & ETL | ✅ Complete |
-| Sprint 2 (Day 08–14) | Ratio Engine & Analytics | 🔜 Planned |
-| Sprint 3 (Day 15–21) | Screening & Scoring | 🔜 Planned |
-| Sprint 4 (Day 22–28) | Streamlit Dashboard | 🔜 Planned |
+| Sprint 2 (Day 08–14) | Ratio Engine & Analytics | ✅ Complete |
+| Sprint 3 (Day 15–21) | Screening & Scoring | ✅ Complete |
+| Sprint 4 (Day 22–28) | Streamlit Dashboard & Valuation | ✅ Complete |
 | Sprint 5 (Day 29–35) | PDF Reports & Exports | 🔜 Planned |
 | Sprint 6 (Day 36–42) | REST API & Deployment | 🔜 Planned |
+
+## Dashboard Screens
+
+The platform features an 8-screen Streamlit application accessible via sidebar navigation:
+
+1. **🏠 01 Home Screen**: Displays aggregate market statistics (Average ROE, Median P/E, Median D/E, count of companies, CAGR, and Debt-Free companies), an interactive Plotly donut chart representing sector company counts, and a leaderboard table showing the top-5 companies sorted by composite quality score. All metrics filter dynamically based on a sidebar year selector (2019-2024).
+2. **📊 02 Company Profile**: Autocomplete text search box to inspect any of the 92 companies. Shows a profile description card, a KPI metrics grid (latest year), a 10-year Bar Chart comparing Revenue and Net Profit, a dual-axis Line Chart showing ROE vs ROCE (computed dynamically), and analyst pros/cons badges.
+3. **🔍 03 Screener Screen**: Multi-metric screening panel with 10 sidebar sliders. Includes 6 preset buttons (Quality, Value, Growth, Dividend, Debt-Free, Turnaround) that auto-fill the sliders, a live-updating table, and a CSV download button to export the results.
+4. **⚖️ 04 Peer Comparison**: benchmarking of any company against its peer group. Displays a Scatterpolar radar chart plotting the company's 8 normalized metrics vs the peer group average, and a side-by-side comparison table highlighting the group's benchmark company row in gold.
+5. **📈 05 Trend Analysis**: overlay comparison for up to 3 metrics (e.g. Sales, Net Profit, ROE, ROCE, FCF) over 10 years on an interactive line chart, with automatically calculated YoY % changes annotated on each point.
+6. **🍩 06 Sector Analysis**: bubble chart for the selected broad sector (X=Sales, Y=ROE, size=Market Cap, color=Sub-Sector) and a cross-sector median KPI comparison bar chart.
+7. **🗺️ 07 Capital Allocation**: treemap grouping the 92 companies by the 8 cash flow patterns (Shareholder Returns, Reinvestor, Liquidating Assets, Distress Signal, etc.) using Plotly treemap. Clicking or selecting a pattern displays its members.
+8. **📁 08 Annual Reports**: search-based list of available annual report years with clickable BSE PDF links. Displays a red "Report unavailable" badge for URLs that return 404.
 
 ---
 
