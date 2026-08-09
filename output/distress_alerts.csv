@@ -1,0 +1,14 @@
+company_id,sector,cfo_value,cff_value,latest_net_profit,distress_flag,notes
+AXISBANK,Financials,-5555.0,22341.0,24861.0,True,CFO < 0 AND CFF > 0 - raising cash from financing while operations burn cash
+BAJAJFINSV,Financials,-68674.0,82709.0,15595.0,True,CFO < 0 AND CFF > 0 - raising cash from financing while operations burn cash
+BAJFINANCE,Financials,-72760.0,82415.0,14451.0,True,CFO < 0 AND CFF > 0 - raising cash from financing while operations burn cash
+BANKBARODA,Financials,-6274.0,5476.0,18869.0,True,CFO < 0 AND CFF > 0 - raising cash from financing while operations burn cash
+BHEL,Industrials,-3713.0,2656.0,282.0,True,CFO < 0 AND CFF > 0 - raising cash from financing while operations burn cash
+CHOLAFIN,Financials,-35683.0,38471.0,3420.0,True,CFO < 0 AND CFF > 0 - raising cash from financing while operations burn cash
+GRASIM,Industrials,-10719.0,33908.0,9926.0,True,CFO < 0 AND CFF > 0 - raising cash from financing while operations burn cash
+M&M,Consumer Discretionary,-5630.0,12281.0,12270.0,True,CFO < 0 AND CFF > 0 - raising cash from financing while operations burn cash
+PFC,Financials,-97820.0,101261.0,26461.0,True,CFO < 0 AND CFF > 0 - raising cash from financing while operations burn cash
+PNB,Financials,-27939.0,3518.0,9157.0,True,CFO < 0 AND CFF > 0 - raising cash from financing while operations burn cash
+RECLTD,Financials,-57723.0,59588.0,14145.0,True,CFO < 0 AND CFF > 0 - raising cash from financing while operations burn cash
+SHRIRAMFIN,Financials,-31101.0,27609.0,7399.0,True,CFO < 0 AND CFF > 0 - raising cash from financing while operations burn cash
+TVSMOTOR,Consumer Discretionary,-1253.0,2759.0,1779.0,True,CFO < 0 AND CFF > 0 - raising cash from financing while operations burn cash

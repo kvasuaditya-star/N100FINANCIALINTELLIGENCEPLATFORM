@@ -6,12 +6,10 @@
 all: load test
 
 load:
-	@echo "Running ETL Ingestion & Loading..."
-	.venv\Scripts\python src/etl/loader.py
+	$(PYTHON) src/etl/loader.py
 
 test:
-	@echo "Running unit test suite..."
-	.venv\Scripts\pytest tests/ --tb=short
+	$(PYTEST) tests/
 
 ratios:
 	@echo "Running Ratio Engine..."

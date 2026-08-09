@@ -1,0 +1,4 @@
+company_id,metric_type,raw_text,reason
+SBILIFE,stock_price_cagr,1 Year:         -2%,No regex match: 1 Year:         -2%
+WIPRO,stock_price_cagr,3 Years:      -1%,No regex match: 3 Years:      -1%
+WIPRO,compounded_sales_growth,TTM:           -3%,No regex match: TTM:           -3%

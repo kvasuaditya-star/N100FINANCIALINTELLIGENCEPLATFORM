@@ -144,7 +144,7 @@ make clean      # Clean pycache and temp files
 | Sprint 2 (Day 08–14) | Ratio Engine & Analytics | ✅ Complete |
 | Sprint 3 (Day 15–21) | Screening & Scoring | ✅ Complete |
 | Sprint 4 (Day 22–28) | Streamlit Dashboard & Valuation | ✅ Complete |
-| Sprint 5 (Day 29–35) | PDF Reports & Exports | 🔜 Planned |
+| Sprint 5 (Day 29–35) | PDF Reports & Exports | ✅ Complete |
 | Sprint 6 (Day 36–42) | REST API & Deployment | 🔜 Planned |
 
 ## Dashboard Screens
