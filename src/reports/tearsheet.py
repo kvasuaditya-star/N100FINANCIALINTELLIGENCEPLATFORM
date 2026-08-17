@@ -6,25 +6,27 @@ Page 2: Balance Sheet stacked bar, Cash Flow waterfall, Pros/Cons, Capital Alloc
 """
 
 import os
-import sys
 import sqlite3
-import pandas as pd
-import numpy as np
 
-from reportlab.lib import colors
-from reportlab.lib.pagesizes import A4
-from reportlab.lib.units import mm, cm
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.lib.enums import TA_LEFT, TA_CENTER, TA_RIGHT
-from reportlab.platypus import (
-    SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle,
-    PageBreak, Frame, PageTemplate, BaseDocTemplate, KeepTogether
-)
-from reportlab.graphics.shapes import Drawing, Rect, String, Line, Circle
+import numpy as np
+import pandas as pd
 from reportlab.graphics.charts.barcharts import VerticalBarChart
-from reportlab.graphics.charts.lineplots import LinePlot
 from reportlab.graphics.charts.legends import Legend
+from reportlab.graphics.charts.lineplots import LinePlot
+from reportlab.graphics.shapes import Drawing
 from reportlab.graphics.widgets.markers import makeMarker
+from reportlab.lib import colors
+from reportlab.lib.enums import TA_CENTER
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
+from reportlab.platypus import (
+    PageBreak,
+    Paragraph,
+    SimpleDocTemplate,
+    Spacer,
+    Table,
+    TableStyle,
+)
 
 # ── Paths ──────────────────────────────────────────────────────────────────
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -58,49 +60,88 @@ PAGE_W, PAGE_H = A4  # 595 x 842 points
 styles = getSampleStyleSheet()
 
 STYLE_TITLE = ParagraphStyle(
-    "TearsheetTitle", parent=styles["Heading1"],
-    fontName="Helvetica-Bold", fontSize=16, textColor=WHITE,
-    spaceAfter=2, leading=20
+    "TearsheetTitle",
+    parent=styles["Heading1"],
+    fontName="Helvetica-Bold",
+    fontSize=16,
+    textColor=WHITE,
+    spaceAfter=2,
+    leading=20,
 )
 STYLE_SUBTITLE = ParagraphStyle(
-    "TearsheetSubtitle", parent=styles["Normal"],
-    fontName="Helvetica", fontSize=10, textColor=colors.HexColor("#A0B0C0"),
-    spaceAfter=2, leading=13
+    "TearsheetSubtitle",
+    parent=styles["Normal"],
+    fontName="Helvetica",
+    fontSize=10,
+    textColor=colors.HexColor("#A0B0C0"),
+    spaceAfter=2,
+    leading=13,
 )
 STYLE_KPI_VALUE = ParagraphStyle(
-    "KPIValue", parent=styles["Normal"],
-    fontName="Helvetica-Bold", fontSize=14, textColor=NAVY,
-    alignment=TA_CENTER, leading=18
+    "KPIValue",
+    parent=styles["Normal"],
+    fontName="Helvetica-Bold",
+    fontSize=14,
+    textColor=NAVY,
+    alignment=TA_CENTER,
+    leading=18,
 )
 STYLE_KPI_LABEL = ParagraphStyle(
-    "KPILabel", parent=styles["Normal"],
-    fontName="Helvetica", fontSize=8, textColor=DARK_GRAY,
-    alignment=TA_CENTER, leading=10
+    "KPILabel",
+    parent=styles["Normal"],
+    fontName="Helvetica",
+    fontSize=8,
+    textColor=DARK_GRAY,
+    alignment=TA_CENTER,
+    leading=10,
 )
 STYLE_SECTION = ParagraphStyle(
-    "SectionHeader", parent=styles["Heading2"],
-    fontName="Helvetica-Bold", fontSize=11, textColor=NAVY,
-    spaceBefore=8, spaceAfter=4, leading=14
+    "SectionHeader",
+    parent=styles["Heading2"],
+    fontName="Helvetica-Bold",
+    fontSize=11,
+    textColor=NAVY,
+    spaceBefore=8,
+    spaceAfter=4,
+    leading=14,
 )
 STYLE_BODY = ParagraphStyle(
-    "BodyText", parent=styles["Normal"],
-    fontName="Helvetica", fontSize=8, textColor=DARK_GRAY,
-    leading=11, wordWrap="CJK"
+    "BodyText",
+    parent=styles["Normal"],
+    fontName="Helvetica",
+    fontSize=8,
+    textColor=DARK_GRAY,
+    leading=11,
+    wordWrap="CJK",
 )
 STYLE_PRO = ParagraphStyle(
-    "ProText", parent=styles["Normal"],
-    fontName="Helvetica", fontSize=7.5, textColor=colors.HexColor("#1E8449"),
-    leading=10, leftIndent=8, wordWrap="CJK"
+    "ProText",
+    parent=styles["Normal"],
+    fontName="Helvetica",
+    fontSize=7.5,
+    textColor=colors.HexColor("#1E8449"),
+    leading=10,
+    leftIndent=8,
+    wordWrap="CJK",
 )
 STYLE_CON = ParagraphStyle(
-    "ConText", parent=styles["Normal"],
-    fontName="Helvetica", fontSize=7.5, textColor=colors.HexColor("#922B21"),
-    leading=10, leftIndent=8, wordWrap="CJK"
+    "ConText",
+    parent=styles["Normal"],
+    fontName="Helvetica",
+    fontSize=7.5,
+    textColor=colors.HexColor("#922B21"),
+    leading=10,
+    leftIndent=8,
+    wordWrap="CJK",
 )
 STYLE_BADGE = ParagraphStyle(
-    "Badge", parent=styles["Normal"],
-    fontName="Helvetica-Bold", fontSize=9, textColor=WHITE,
-    alignment=TA_CENTER, leading=12
+    "Badge",
+    parent=styles["Normal"],
+    fontName="Helvetica-Bold",
+    fontSize=9,
+    textColor=WHITE,
+    alignment=TA_CENTER,
+    leading=12,
 )
 
 
@@ -138,9 +179,7 @@ def load_company_data(company_id):
     conn = sqlite3.connect(DB_PATH)
 
     # Company info
-    comp = pd.read_sql_query(
-        f"SELECT * FROM companies WHERE id = '{company_id}'", conn
-    )
+    comp = pd.read_sql_query(f"SELECT * FROM companies WHERE id = '{company_id}'", conn)
     if comp.empty:
         conn.close()
         return None
@@ -148,37 +187,40 @@ def load_company_data(company_id):
     # Sector
     sector = pd.read_sql_query(
         f"SELECT broad_sector, sub_sector FROM sectors WHERE company_id = '{company_id}'",
-        conn
+        conn,
     )
 
     # P&L (last 10 years)
     pnl = pd.read_sql_query(
         f"SELECT * FROM profitandloss WHERE company_id = '{company_id}' "
-        "ORDER BY year", conn
+        "ORDER BY year",
+        conn,
     )
 
     # Balance sheet
     bs = pd.read_sql_query(
         f"SELECT * FROM balancesheet WHERE company_id = '{company_id}' "
-        "ORDER BY year", conn
+        "ORDER BY year",
+        conn,
     )
 
     # Cashflow
     cf = pd.read_sql_query(
-        f"SELECT * FROM cashflow WHERE company_id = '{company_id}' "
-        "ORDER BY year", conn
+        f"SELECT * FROM cashflow WHERE company_id = '{company_id}' " "ORDER BY year",
+        conn,
     )
 
     # Financial ratios
     fr = pd.read_sql_query(
         f"SELECT * FROM financial_ratios WHERE company_id = '{company_id}' "
-        "ORDER BY year", conn
+        "ORDER BY year",
+        conn,
     )
 
     # Market cap
     mc = pd.read_sql_query(
-        f"SELECT * FROM market_cap WHERE company_id = '{company_id}' "
-        "ORDER BY year", conn
+        f"SELECT * FROM market_cap WHERE company_id = '{company_id}' " "ORDER BY year",
+        conn,
     )
 
     conn.close()
@@ -205,7 +247,11 @@ def load_company_data(company_id):
 
     return {
         "company": comp.iloc[0],
-        "sector": sector.iloc[0] if not sector.empty else {"broad_sector": "N/A", "sub_sector": "N/A"},
+        "sector": (
+            sector.iloc[0]
+            if not sector.empty
+            else {"broad_sector": "N/A", "sub_sector": "N/A"}
+        ),
         "pnl": pnl.tail(10),  # Last 10 years
         "bs": bs.tail(10),
         "cf": cf.tail(10),
@@ -237,7 +283,9 @@ def create_header(canvas, company_name, ticker, sector, sub_sector):
     # Page indicator
     canvas.setFont("Helvetica", 8)
     canvas.setFillColor(colors.HexColor("#708090"))
-    canvas.drawRightString(PAGE_W - 25, PAGE_H - 48, "N100 Financial Intelligence Platform")
+    canvas.drawRightString(
+        PAGE_W - 25, PAGE_H - 48, "N100 Financial Intelligence Platform"
+    )
 
     canvas.restoreState()
 
@@ -272,15 +320,19 @@ def build_kpi_tiles(fr_latest, mc_latest):
 
     col_w = (PAGE_W - 60) / 3
     table = Table([row1, row2], colWidths=[col_w] * 3, rowHeights=[45, 45])
-    table.setStyle(TableStyle([
-        ("ALIGN", (0, 0), (-1, -1), "CENTER"),
-        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-        ("BOX", (0, 0), (-1, -1), 0.5, MEDIUM_GRAY),
-        ("INNERGRID", (0, 0), (-1, -1), 0.5, MEDIUM_GRAY),
-        ("BACKGROUND", (0, 0), (-1, -1), LIGHT_GRAY),
-        ("TOPPADDING", (0, 0), (-1, -1), 4),
-        ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
-    ]))
+    table.setStyle(
+        TableStyle(
+            [
+                ("ALIGN", (0, 0), (-1, -1), "CENTER"),
+                ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+                ("BOX", (0, 0), (-1, -1), 0.5, MEDIUM_GRAY),
+                ("INNERGRID", (0, 0), (-1, -1), 0.5, MEDIUM_GRAY),
+                ("BACKGROUND", (0, 0), (-1, -1), LIGHT_GRAY),
+                ("TOPPADDING", (0, 0), (-1, -1), 4),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
+            ]
+        )
+    )
 
     return table
 
@@ -300,7 +352,9 @@ def build_revenue_profit_chart(pnl):
 
     # Extract years and values
     years = pnl["year"].tolist()
-    short_years = [y[-5:] if len(str(y)) > 5 else str(y) for y in years]  # Show last 5 chars
+    short_years = [
+        y[-5:] if len(str(y)) > 5 else str(y) for y in years
+    ]  # Show last 5 chars
     revenues = [float(v) if not pd.isna(v) else 0 for v in pnl["sales"].tolist()]
     profits = [float(v) if not pd.isna(v) else 0 for v in pnl["net_profit"].tolist()]
 
@@ -422,12 +476,12 @@ def build_bs_stacked_chart(bs):
         ec = float(ec) if not pd.isna(ec) else 0.0
         res = float(res) if not pd.isna(res) else 0.0
         equity.append(ec + res)
-        
+
     borrowings = []
     for _, r in bs.iterrows():
         b = r.get("borrowings", 0)
         borrowings.append(float(b) if not pd.isna(b) else 0.0)
-        
+
     other_liab = []
     for _, r in bs.iterrows():
         ol = r.get("other_liabilities", 0)
@@ -472,6 +526,7 @@ def build_cashflow_waterfall(cf):
         return Spacer(1, 10)
 
     latest = cf.iloc[-1]
+
     def get_safe_float(row, col):
         val = row.get(col, 0)
         return float(val) if not pd.isna(val) else 0.0
@@ -549,14 +604,18 @@ def build_ca_badge(ca_label):
 
     data = [[Paragraph(f"Capital Allocation: {ca_label}", STYLE_BADGE)]]
     table = Table(data, colWidths=[PAGE_W - 60], rowHeights=[25])
-    table.setStyle(TableStyle([
-        ("BACKGROUND", (0, 0), (-1, -1), bg),
-        ("ALIGN", (0, 0), (-1, -1), "CENTER"),
-        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-        ("TOPPADDING", (0, 0), (-1, -1), 4),
-        ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
-        ("ROUNDEDCORNERS", [4, 4, 4, 4]),
-    ]))
+    table.setStyle(
+        TableStyle(
+            [
+                ("BACKGROUND", (0, 0), (-1, -1), bg),
+                ("ALIGN", (0, 0), (-1, -1), "CENTER"),
+                ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+                ("TOPPADDING", (0, 0), (-1, -1), 4),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
+                ("ROUNDEDCORNERS", [4, 4, 4, 4]),
+            ]
+        )
+    )
 
     return table
 
@@ -575,8 +634,16 @@ def generate_tearsheet(company_id, output_path=None):
     company = data["company"]
     company_name = company.get("company_name", company_id)
     sector_info = data["sector"]
-    broad_sector = sector_info.get("broad_sector", "N/A") if isinstance(sector_info, dict) else getattr(sector_info, "broad_sector", "N/A")
-    sub_sector = sector_info.get("sub_sector", "N/A") if isinstance(sector_info, dict) else getattr(sector_info, "sub_sector", "N/A")
+    broad_sector = (
+        sector_info.get("broad_sector", "N/A")
+        if isinstance(sector_info, dict)
+        else getattr(sector_info, "broad_sector", "N/A")
+    )
+    sub_sector = (
+        sector_info.get("sub_sector", "N/A")
+        if isinstance(sector_info, dict)
+        else getattr(sector_info, "sub_sector", "N/A")
+    )
 
     pnl = data["pnl"]
     bs_data = data["bs"]
@@ -650,7 +717,9 @@ def generate_tearsheet(company_id, output_path=None):
         canvas.saveState()
         canvas.setFont("Helvetica", 7)
         canvas.setFillColor(MEDIUM_GRAY)
-        canvas.drawString(30, 15, f"N100 Financial Intelligence Platform  |  {company_id} Tearsheet")
+        canvas.drawString(
+            30, 15, f"N100 Financial Intelligence Platform  |  {company_id} Tearsheet"
+        )
         canvas.drawRightString(PAGE_W - 30, 15, f"Page {doc_obj.page}")
         canvas.restoreState()
 

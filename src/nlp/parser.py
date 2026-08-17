@@ -4,9 +4,10 @@ Parses text fields in analysis.xlsx using regex to extract CAGR values.
 Cross-validates parsed values against computed CAGR from the Ratio Engine.
 """
 
-import re
 import os
+import re
 import sqlite3
+
 import pandas as pd
 
 # ── Paths ──────────────────────────────────────────────────────────────────
@@ -165,27 +166,31 @@ def run_parser():
             parsed, unmatched = parse_text_field(raw_text)
 
             for period, value in parsed:
-                parsed_rows.append({
-                    "company_id": company_id,
-                    "metric_type": metric,
-                    "period_years": period,
-                    "value_pct": value,
-                })
+                parsed_rows.append(
+                    {
+                        "company_id": company_id,
+                        "metric_type": metric,
+                        "period_years": period,
+                        "value_pct": value,
+                    }
+                )
 
             for reason in unmatched:
-                failure_rows.append({
-                    "company_id": company_id,
-                    "metric_type": metric,
-                    "raw_text": str(raw_text).strip()[:200],
-                    "reason": f"No regex match: {reason}",
-                })
+                failure_rows.append(
+                    {
+                        "company_id": company_id,
+                        "metric_type": metric,
+                        "raw_text": str(raw_text).strip()[:200],
+                        "reason": f"No regex match: {reason}",
+                    }
+                )
 
     # ── 3. Save parsed CSV ─────────────────────────────────────────────────
     parsed_df = pd.DataFrame(parsed_rows)
     parsed_df.to_csv(PARSED_CSV, index=False)
     print(f"\n[OK] Saved {len(parsed_df)} parsed entries to {PARSED_CSV}")
     print(f"   Unique companies: {parsed_df['company_id'].nunique()}")
-    print(f"   Metrics breakdown:")
+    print("   Metrics breakdown:")
     for metric in METRIC_COLUMNS:
         count = len(parsed_df[parsed_df["metric_type"] == metric])
         print(f"     {metric}: {count} entries")
@@ -204,8 +209,8 @@ def run_parser():
 
     for (metric_type, period), col_name in CROSS_VAL_MAP.items():
         subset = parsed_df[
-            (parsed_df["metric_type"] == metric_type) &
-            (parsed_df["period_years"] == period)
+            (parsed_df["metric_type"] == metric_type)
+            & (parsed_df["period_years"] == period)
         ]
 
         for _, prow in subset.iterrows():
@@ -222,13 +227,15 @@ def run_parser():
 
             divergence = abs(parsed_val - computed_val)
             if divergence > DIVERGENCE_THRESHOLD:
-                divergence_rows.append({
-                    "company_id": cid,
-                    "metric_type": f"{metric_type}_{period}yr",
-                    "parsed_value": parsed_val,
-                    "computed_value": round(computed_val, 2),
-                    "divergence_pct": round(divergence, 2),
-                })
+                divergence_rows.append(
+                    {
+                        "company_id": cid,
+                        "metric_type": f"{metric_type}_{period}yr",
+                        "parsed_value": parsed_val,
+                        "computed_value": round(computed_val, 2),
+                        "divergence_pct": round(divergence, 2),
+                    }
+                )
 
     divergence_df = pd.DataFrame(divergence_rows)
     divergence_df.to_csv(DIVERGENCE_CSV, index=False)

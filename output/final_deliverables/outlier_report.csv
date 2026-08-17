@@ -1,0 +1,4 @@
+company_id,broad_sector,metric,value,sector_mean,z_score
+ADANIGREEN,Energy,debt_to_equity,6.375756429652042,1.3297019161103534,3.2856579250948235
+PNB,Financials,return_on_equity_pct,61.320565191187306,17.703731182032328,4.572143124340356
+SBIN,Financials,operating_profit_margin_pct,-13.729168991026642,41.242135954361615,-3.397599694118778

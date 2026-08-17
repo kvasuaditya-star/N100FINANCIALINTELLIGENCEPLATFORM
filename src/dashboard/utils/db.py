@@ -1,22 +1,32 @@
 import os
-import sys
 import sqlite3
+import sys
+
 import pandas as pd
-import numpy as np
 import streamlit as st
 
-DB_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), "data", "nifty100.db")
+DB_PATH = os.path.join(
+    os.path.dirname(
+        os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    ),
+    "data",
+    "nifty100.db",
+)
 if not os.path.exists(DB_PATH):
     DB_PATH = "data/nifty100.db"
 
 # Add project root to sys.path to allow importing from src
-PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+PROJECT_ROOT = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+)
 if PROJECT_ROOT not in sys.path:
     sys.path.append(PROJECT_ROOT)
+
 
 def get_connection():
     conn = sqlite3.connect(DB_PATH)
     return conn
+
 
 @st.cache_data(ttl=600)
 def get_companies():
@@ -32,6 +42,7 @@ def get_companies():
     conn.close()
     return df
 
+
 @st.cache_data(ttl=600)
 def get_ratios(ticker, year=None):
     """Returns financial ratios for a given company. Filters by year if provided."""
@@ -45,6 +56,7 @@ def get_ratios(ticker, year=None):
     conn.close()
     return df
 
+
 @st.cache_data(ttl=600)
 def get_pl(ticker):
     """Returns P&L statement for a company, sorted by year."""
@@ -53,6 +65,7 @@ def get_pl(ticker):
     df = pd.read_sql_query(query, conn, params=(ticker,))
     conn.close()
     return df
+
 
 @st.cache_data(ttl=600)
 def get_bs(ticker):
@@ -63,6 +76,7 @@ def get_bs(ticker):
     conn.close()
     return df
 
+
 @st.cache_data(ttl=600)
 def get_cf(ticker):
     """Returns cash flow statement for a company, sorted by year."""
@@ -71,6 +85,7 @@ def get_cf(ticker):
     df = pd.read_sql_query(query, conn, params=(ticker,))
     conn.close()
     return df
+
 
 @st.cache_data(ttl=600)
 def get_sectors():
@@ -85,6 +100,7 @@ def get_sectors():
     df = pd.read_sql_query(query, conn)
     conn.close()
     return df
+
 
 @st.cache_data(ttl=600)
 def get_peers(group_name):
@@ -102,6 +118,7 @@ def get_peers(group_name):
     conn.close()
     return df
 
+
 @st.cache_data(ttl=600)
 def get_valuation(ticker):
     """Returns valuation multiples and market cap history for a company."""
@@ -110,6 +127,7 @@ def get_valuation(ticker):
     df = pd.read_sql_query(query, conn, params=(ticker,))
     conn.close()
     return df
+
 
 @st.cache_data(ttl=600)
 def get_merged_data(year):
@@ -134,22 +152,28 @@ def get_merged_data(year):
     year_str = str(year)
     df = pd.read_sql_query(query, conn, params=(int(year_str), f"{year_str}-%"))
     conn.close()
-    
+
     if not df.empty:
         # Load cashflow for FCF CAGR calculations in compute_composite_score
         conn = get_connection()
-        df_cf = pd.read_sql_query("SELECT company_id, year, operating_activity, investing_activity FROM cashflow", conn)
+        df_cf = pd.read_sql_query(
+            "SELECT company_id, year, operating_activity, investing_activity FROM cashflow",
+            conn,
+        )
         conn.close()
-        
+
         # Import the scoring engine
         from src.screener.engine import compute_composite_score
+
         df = compute_composite_score(df, df_cf)
-        
+
     return df
+
 
 def apply_custom_style():
     """Injects high-end, premium styling (dark mode, glassmorphism elements, clean typography)."""
-    st.markdown("""
+    st.markdown(
+        """
         <style>
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap');
         
@@ -222,4 +246,6 @@ def apply_custom_style():
             border-right: 1px solid rgba(255, 255, 255, 0.1);
         }
         </style>
-    """, unsafe_allow_html=True)
+    """,
+        unsafe_allow_html=True,
+    )

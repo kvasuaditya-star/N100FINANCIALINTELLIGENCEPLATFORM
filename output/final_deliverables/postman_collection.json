@@ -1,0 +1,418 @@
+{
+	"info": {
+		"_postman_id": "a587bead-8153-4b9b-980b-9dfc29f6de6c",
+		"name": "N100 Financial Intelligence API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Health Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/v1/health",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Companies List",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/v1/companies?sector=Energy",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"companies"
+					],
+					"query": [
+						{
+							"key": "sector",
+							"value": "Energy"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Company Profile",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/v1/companies/TCS",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"companies",
+						"TCS"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Company P&L History",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/v1/companies/TCS/pl?from_year=2020-03&to_year=2024-03",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"companies",
+						"TCS",
+						"pl"
+					],
+					"query": [
+						{
+							"key": "from_year",
+							"value": "2020-03"
+						},
+						{
+							"key": "to_year",
+							"value": "2024-03"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Company Balance Sheet History",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/v1/companies/TCS/bs?from_year=2020-03&to_year=2024-03",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"companies",
+						"TCS",
+						"bs"
+					],
+					"query": [
+						{
+							"key": "from_year",
+							"value": "2020-03"
+						},
+						{
+							"key": "to_year",
+							"value": "2024-03"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Company Cashflow History",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/v1/companies/TCS/cashflow?from_year=2020-03&to_year=2024-03",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"companies",
+						"TCS",
+						"cashflow"
+					],
+					"query": [
+						{
+							"key": "from_year",
+							"value": "2020-03"
+						},
+						{
+							"key": "to_year",
+							"value": "2024-03"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Company Ratios History",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/v1/companies/TCS/ratios?year=2024-03",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"companies",
+						"TCS",
+						"ratios"
+					],
+					"query": [
+						{
+							"key": "year",
+							"value": "2024-03"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Download Company Tearsheet PDF",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/v1/companies/TCS/tearsheet",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"companies",
+						"TCS",
+						"tearsheet"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Screener API",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/v1/screener?min_roe=15&max_de=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"screener"
+					],
+					"query": [
+						{
+							"key": "min_roe",
+							"value": "15"
+						},
+						{
+							"key": "max_de",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Sectors Summary",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/v1/sectors",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"sectors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Sector Companies",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/v1/sectors/Energy/companies",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"sectors",
+						"Energy",
+						"companies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Peer Group Metrics",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/v1/peers/it - software",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"peers",
+						"it - software"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Compare Company with Peers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/v1/companies/TCS/peers/compare",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"companies",
+						"TCS",
+						"peers",
+						"compare"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Company Valuation History",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/v1/market-cap/TCS",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"market-cap",
+						"TCS"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Portfolio Percentiles",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/v1/portfolio/stats",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"portfolio",
+						"stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Company Documents Links",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/v1/companies/TCS/documents",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"companies",
+						"TCS",
+						"documents"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

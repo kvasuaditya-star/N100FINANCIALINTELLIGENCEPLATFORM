@@ -5,10 +5,10 @@ and capital allocation patterns for all 92 companies.
 """
 
 import os
-import sys
 import sqlite3
+import sys
+
 import pandas as pd
-import numpy as np
 
 # ── Paths ──────────────────────────────────────────────────────────────────
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -56,25 +56,26 @@ def run_cashflow_intelligence():
     companies = pd.read_sql_query("SELECT id FROM companies ORDER BY id", conn)
     company_ids = companies["id"].tolist()
 
-    sectors = pd.read_sql_query(
-        "SELECT company_id, broad_sector FROM sectors", conn
-    )
+    sectors = pd.read_sql_query("SELECT company_id, broad_sector FROM sectors", conn)
     sector_map = dict(zip(sectors["company_id"], sectors["broad_sector"]))
 
     cashflow = pd.read_sql_query(
         "SELECT company_id, year, operating_activity, investing_activity, "
         "financing_activity, net_cash_flow FROM cashflow "
-        "ORDER BY company_id, year", conn
+        "ORDER BY company_id, year",
+        conn,
     )
 
     pnl = pd.read_sql_query(
         "SELECT company_id, year, sales, operating_profit, net_profit "
-        "FROM profitandloss ORDER BY company_id, year", conn
+        "FROM profitandloss ORDER BY company_id, year",
+        conn,
     )
 
     bs = pd.read_sql_query(
         "SELECT company_id, year, borrowings FROM balancesheet "
-        "ORDER BY company_id, year", conn
+        "ORDER BY company_id, year",
+        conn,
     )
 
     conn.close()
@@ -168,7 +169,7 @@ def run_cashflow_intelligence():
 
             if len(fcf_vals) >= 6:
                 start_fcf = fcf_vals[-6]  # 5 years ago
-                end_fcf = fcf_vals[-1]    # latest
+                end_fcf = fcf_vals[-1]  # latest
                 fcf_cagr = compute_cagr(start_fcf, end_fcf, 5)
 
         # ── 4. FCF Conversion % ───────────────────────────────────────────
@@ -206,9 +207,13 @@ def run_cashflow_intelligence():
             cff = safe_float(latest["financing_activity"])
             bw_latest = safe_float(bsheet.iloc[-1]["borrowings"])
             bw_prev = safe_float(bsheet.iloc[-2]["borrowings"])
-            if (cff is not None and cff < 0 and
-                    bw_latest is not None and bw_prev is not None and
-                    bw_latest < bw_prev):
+            if (
+                cff is not None
+                and cff < 0
+                and bw_latest is not None
+                and bw_prev is not None
+                and bw_latest < bw_prev
+            ):
                 deleveraging_flag = True
 
         # ── 7. Capital Allocation Label ────────────────────────────────────
@@ -224,32 +229,47 @@ def run_cashflow_intelligence():
         if not pl.empty:
             latest_np = safe_float(pl.iloc[-1]["net_profit"])
 
-        results.append({
-            "company_id": cid,
-            "sector": sector,
-            "cfo_quality_score": round(cfo_score, 3) if cfo_score is not None else None,
-            "cfo_quality_label": cfo_label,
-            "capex_intensity_pct": round(capex_pct, 2) if capex_pct is not None else None,
-            "capex_label": capex_label,
-            "fcf_cagr_5yr": round(fcf_cagr, 2) if fcf_cagr is not None else None,
-            "fcf_conversion_pct": round(fcf_conversion, 2) if fcf_conversion is not None else None,
-            "distress_flag": distress_flag,
-            "deleveraging_flag": deleveraging_flag,
-            "capital_allocation_label": ca_label,
-            # Extra fields for distress alerts
-            "_cfo_value": cfo_value,
-            "_cff_value": cff_value,
-            "_latest_np": latest_np,
-        })
+        results.append(
+            {
+                "company_id": cid,
+                "sector": sector,
+                "cfo_quality_score": (
+                    round(cfo_score, 3) if cfo_score is not None else None
+                ),
+                "cfo_quality_label": cfo_label,
+                "capex_intensity_pct": (
+                    round(capex_pct, 2) if capex_pct is not None else None
+                ),
+                "capex_label": capex_label,
+                "fcf_cagr_5yr": round(fcf_cagr, 2) if fcf_cagr is not None else None,
+                "fcf_conversion_pct": (
+                    round(fcf_conversion, 2) if fcf_conversion is not None else None
+                ),
+                "distress_flag": distress_flag,
+                "deleveraging_flag": deleveraging_flag,
+                "capital_allocation_label": ca_label,
+                # Extra fields for distress alerts
+                "_cfo_value": cfo_value,
+                "_cff_value": cff_value,
+                "_latest_np": latest_np,
+            }
+        )
 
     # ── Build output DataFrame ─────────────────────────────────────────────
     df = pd.DataFrame(results)
 
     # ── Save cashflow_intelligence.xlsx ─────────────────────────────────────
     out_cols = [
-        "company_id", "sector", "cfo_quality_score", "cfo_quality_label",
-        "capex_intensity_pct", "capex_label", "fcf_cagr_5yr",
-        "fcf_conversion_pct", "distress_flag", "deleveraging_flag",
+        "company_id",
+        "sector",
+        "cfo_quality_score",
+        "cfo_quality_label",
+        "capex_intensity_pct",
+        "capex_label",
+        "fcf_cagr_5yr",
+        "fcf_conversion_pct",
+        "distress_flag",
+        "deleveraging_flag",
         "capital_allocation_label",
     ]
     df[out_cols].to_excel(OUTPUT_XLSX, index=False, engine="openpyxl")
@@ -257,15 +277,17 @@ def run_cashflow_intelligence():
 
     # ── Save distress_alerts.csv ───────────────────────────────────────────
     distressed = df[df["distress_flag"] == True].copy()
-    distress_out = pd.DataFrame({
-        "company_id": distressed["company_id"],
-        "sector": distressed["sector"],
-        "cfo_value": distressed["_cfo_value"],
-        "cff_value": distressed["_cff_value"],
-        "latest_net_profit": distressed["_latest_np"],
-        "distress_flag": True,
-        "notes": "CFO < 0 AND CFF > 0 - raising cash from financing while operations burn cash",
-    })
+    distress_out = pd.DataFrame(
+        {
+            "company_id": distressed["company_id"],
+            "sector": distressed["sector"],
+            "cfo_value": distressed["_cfo_value"],
+            "cff_value": distressed["_cff_value"],
+            "latest_net_profit": distressed["_latest_np"],
+            "distress_flag": True,
+            "notes": "CFO < 0 AND CFF > 0 - raising cash from financing while operations burn cash",
+        }
+    )
     distress_out.to_csv(DISTRESS_CSV, index=False)
     print(f"[OK] Saved {len(distress_out)} distress alerts to {DISTRESS_CSV}")
 
@@ -277,13 +299,21 @@ def run_cashflow_intelligence():
 
     print("\n  CFO Quality Distribution:")
     for label in ["High Quality", "Moderate", "Accrual Risk", None]:
-        count = len(df[df["cfo_quality_label"] == label]) if label else len(df[df["cfo_quality_label"].isna()])
+        count = (
+            len(df[df["cfo_quality_label"] == label])
+            if label
+            else len(df[df["cfo_quality_label"].isna()])
+        )
         lbl = label if label else "N/A (insufficient data)"
         print(f"    {lbl}: {count}")
 
     print("\n  CapEx Intensity Distribution:")
     for label in ["Asset Light", "Moderate", "Capital Intensive", None]:
-        count = len(df[df["capex_label"] == label]) if label else len(df[df["capex_label"].isna()])
+        count = (
+            len(df[df["capex_label"] == label])
+            if label
+            else len(df[df["capex_label"].isna()])
+        )
         lbl = label if label else "N/A"
         print(f"    {lbl}: {count}")
 

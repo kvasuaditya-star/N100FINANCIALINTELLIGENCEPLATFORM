@@ -6,6 +6,7 @@ and tracks pattern changes year-over-year.
 
 import os
 import sqlite3
+
 import pandas as pd
 
 # ── Paths ──────────────────────────────────────────────────────────────────
@@ -42,7 +43,7 @@ def run_capital_allocation_report():
     missing = all_ids - ca_ids
     extra = ca_ids - all_ids
 
-    print(f"\nCoverage check:")
+    print("\nCoverage check:")
     print(f"  Companies in DB:            {len(all_ids)}")
     print(f"  Companies in CSV:           {len(ca_ids)}")
     print(f"  Missing from CSV:           {len(missing)}")
@@ -80,14 +81,16 @@ def run_capital_allocation_report():
         curr_pattern = curr["pattern_label"]
 
         if prev_pattern != curr_pattern:
-            change_rows.append({
-                "company_id": cid,
-                "previous_year": prev["year"],
-                "previous_pattern": prev_pattern,
-                "latest_year": curr["year"],
-                "latest_pattern": curr_pattern,
-                "change_description": f"Moved from {prev_pattern} to {curr_pattern}",
-            })
+            change_rows.append(
+                {
+                    "company_id": cid,
+                    "previous_year": prev["year"],
+                    "previous_pattern": prev_pattern,
+                    "latest_year": curr["year"],
+                    "latest_pattern": curr_pattern,
+                    "change_description": f"Moved from {prev_pattern} to {curr_pattern}",
+                }
+            )
 
     changes_df = pd.DataFrame(change_rows)
     changes_df.to_csv(PATTERN_CHANGES_CSV, index=False)
@@ -99,11 +102,14 @@ def run_capital_allocation_report():
 
     if not changes_df.empty:
         # Show transition summary
-        transitions = changes_df.groupby(
-            ["previous_pattern", "latest_pattern"]
-        ).size().reset_index(name="count").sort_values("count", ascending=False)
+        transitions = (
+            changes_df.groupby(["previous_pattern", "latest_pattern"])
+            .size()
+            .reset_index(name="count")
+            .sort_values("count", ascending=False)
+        )
 
-        print(f"\n  Top transitions:")
+        print("\n  Top transitions:")
         for _, t in transitions.head(10).iterrows():
             print(f"    {t['previous_pattern']} -> {t['latest_pattern']}: {t['count']}")
 

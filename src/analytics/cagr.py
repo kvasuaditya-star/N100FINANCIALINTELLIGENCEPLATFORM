@@ -4,7 +4,7 @@ def calculate_cagr(start_val, end_val, n):
     Returns: (cagr_value, flag)
     - cagr_value: numeric value of CAGR or None
     - flag: string code representing the edge case, or None
-    
+
     Edge cases:
     1. Positive to Positive: compute normally.
     2. Positive to Negative: return (None, 'DECLINE_TO_LOSS')
@@ -15,7 +15,7 @@ def calculate_cagr(start_val, end_val, n):
     """
     if start_val is None or end_val is None:
         return None, "INSUFFICIENT"
-        
+
     try:
         start_val = float(start_val)
         end_val = float(end_val)

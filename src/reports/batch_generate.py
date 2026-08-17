@@ -4,10 +4,11 @@ Generates tearsheets for all 92 companies in the database.
 """
 
 import os
-import sys
 import sqlite3
-import pandas as pd
+import sys
 import time
+
+import pandas as pd
 
 # ── Paths ──────────────────────────────────────────────────────────────────
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -24,7 +25,9 @@ def run_batch_generation():
     os.makedirs(REPORTS_DIR, exist_ok=True)
 
     conn = sqlite3.connect(DB_PATH)
-    companies = pd.read_sql_query("SELECT id, company_name FROM companies ORDER BY id", conn)
+    companies = pd.read_sql_query(
+        "SELECT id, company_name FROM companies ORDER BY id", conn
+    )
     conn.close()
 
     company_ids = companies["id"].tolist()
@@ -39,7 +42,7 @@ def run_batch_generation():
 
     for i, cid in enumerate(company_ids, 1):
         output_path = os.path.join(REPORTS_DIR, f"{cid}_tearsheet.pdf")
-        
+
         try:
             success = generate_tearsheet(cid, output_path)
             if success:
@@ -47,13 +50,15 @@ def run_batch_generation():
                 print(f"[{i:02d}/{total:02d}] [OK] Generated {cid}")
             else:
                 fail_count += 1
-                print(f"[{i:02d}/{total:02d}] [ERROR] Failed to generate {cid} - No data")
+                print(
+                    f"[{i:02d}/{total:02d}] [ERROR] Failed to generate {cid} - No data"
+                )
         except Exception as e:
             fail_count += 1
             print(f"[{i:02d}/{total:02d}] [ERROR] Failed {cid}: {e}")
 
     elapsed = time.time() - start_time
-    
+
     print("\n" + "=" * 60)
     print("BATCH GENERATION COMPLETE")
     print("=" * 60)

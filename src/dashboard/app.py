@@ -1,36 +1,39 @@
-import streamlit as st
 import os
 import sys
 
+import streamlit as st
+
 # Ensure utils can be imported
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-from utils.db import apply_custom_style, get_companies, get_sectors
+from utils.db import apply_custom_style
 
 # Set page config as the very first Streamlit command
 st.set_page_config(
-    page_title="Nifty 100 Analytics",
-    layout="wide",
-    initial_sidebar_state="expanded"
+    page_title="Nifty 100 Analytics", layout="wide", initial_sidebar_state="expanded"
 )
 
 # Apply custom visual stylesheet
 apply_custom_style()
 
 # Title with gradient effect
-st.markdown("""
+st.markdown(
+    """
     <h1 style='text-align: center; color: #00e5ff; font-size: 3rem; margin-bottom: 5px;'>
         Nifty 100 Analytics
     </h1>
     <p style='text-align: center; color: #b0bec5; font-size: 1.2rem; margin-bottom: 40px;'>
         Comprehensive Financial Intelligence & Valuation Platform
     </p>
-""", unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
 
 # Grid Layout for Overview Cards
 col1, col2, col3 = st.columns(3)
 
 with col1:
-    st.markdown("""
+    st.markdown(
+        """
         <div class="kpi-card">
             <div class="kpi-title">Core Focus</div>
             <div class="kpi-value">92 Companies</div>
@@ -38,10 +41,13 @@ with col1:
                 In-depth financial tracking for key Nifty 100 constituents.
             </p>
         </div>
-    """, unsafe_allow_html=True)
+    """,
+        unsafe_allow_html=True,
+    )
 
 with col2:
-    st.markdown("""
+    st.markdown(
+        """
         <div class="kpi-card">
             <div class="kpi-title">Metrics Evaluated</div>
             <div class="kpi-value">10 Years</div>
@@ -49,10 +55,13 @@ with col2:
                 Historical profit and loss, balance sheet, and cash flow trends.
             </p>
         </div>
-    """, unsafe_allow_html=True)
+    """,
+        unsafe_allow_html=True,
+    )
 
 with col3:
-    st.markdown("""
+    st.markdown(
+        """
         <div class="kpi-card">
             <div class="kpi-title">Analysis Features</div>
             <div class="kpi-value">8 Screens</div>
@@ -60,13 +69,20 @@ with col3:
                 Screeners, peer groups, trend overlays, and capital maps.
             </p>
         </div>
-    """, unsafe_allow_html=True)
+    """,
+        unsafe_allow_html=True,
+    )
 
-st.markdown("<hr style='border: 0.5px solid rgba(255,255,255,0.1); margin: 40px 0;'>", unsafe_allow_html=True)
+st.markdown(
+    "<hr style='border: 0.5px solid rgba(255,255,255,0.1); margin: 40px 0;'>",
+    unsafe_allow_html=True,
+)
 
 # Navigation Helper Section
 st.subheader("Platform Navigator")
-st.markdown("Use the **sidebar** to navigate to any of the following 8 specialized screens:")
+st.markdown(
+    "Use the **sidebar** to navigate to any of the following 8 specialized screens:"
+)
 
 nav_col1, nav_col2 = st.columns(2)
 
@@ -86,4 +102,6 @@ with nav_col2:
         - 📁 **08 Annual Reports**: Search and download BSE report PDFs with automated 404 validation.
     """)
 
-st.info("💡 **Tip**: Select **01 Home** in the sidebar to get started with the market overview!")
+st.info(
+    "💡 **Tip**: Select **01 Home** in the sidebar to get started with the market overview!"
+)
